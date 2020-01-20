@@ -271,7 +271,7 @@
                 <form>
                         <div class="form-group">
                                 <label style="color:rgb(0, 0, 0);font-size: 20px;padding:20px 10px 20px 0px;"><b style="font-size: 28px;"><u>Frage:</u></b><br/><br> {{question.question}} </label>
-                                <div  *ngIf="CheckOn || TextOn || datumOn || dateiUploadOn || multiTextOn">
+                                <div  *ngIf="CheckOn || TextOn || datumOn || dateiUploadOn || multiTextOn || radioOn || dropdownOn">
                                         <br>
                                         <br>
                                         <h2 style="color:rgb(0, 0, 0);" for="exampleInputEmail2"><u>Folgefrage: </u></h2>
@@ -474,13 +474,13 @@
                         </div>
                 </div>
                 <div class="col-sm vr nopadding" id="tabellenId">
-                        <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='textInput' || c.questionType.type=='datumEingabe' || c.questionType.type=='datenInput' || c.questionType.type=='multiTextInput' ">- {{c.question}}<hr></div>
+                        <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='textInput' || c.questionType.type=='datumEingabe' || c.questionType.type=='datenInput' || c.questionType.type=='multiTextInput' || c.questionType.type=='radioButton' || c.questionType.type=='dropDown' ">- {{c.question}}<hr></div>
                                 <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='radioButton' || c.questionType.type=='dropDown' ">
                                         <ng-container *ngFor="let d of c.questionType.choices;let l = count; let index = index" >- {{d.choice}}<br/><hr *ngIf="index < l-1"></ng-container> <!--<div class="col-xs-12 col-sm-12 hidden-md hidden-lg hrspacing"><hr class="hrcolor"></div> -->
                                 </div>
                         </div>
                         <div class="col-sm vr nopadding" id="tabellenId">
-                                <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='textInput' || c.questionType.type=='datumEingabe' || c.questionType.type=='datenInput' || c.questionType.type=='multiTextInput' ">- {{getQuestionByIdForFrontend(c.questionType.defaultWay)}}<hr></div>
+                                <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='textInput' || c.questionType.type=='datumEingabe' || c.questionType.type=='datenInput' || c.questionType.type=='multiTextInput' || c.questionType.type=='radioButton' || c.questionType.type=='dropDown' ">- {{getQuestionByIdForFrontend(c.questionType.defaultWay)}}<hr></div>
                                 <div *ngIf="c.questionType.type=='checkBox' || c.questionType.type=='radioButton' || c.questionType.type=='dropDown' ">
                                         <ng-container  *ngFor="let d of c.questionType.choices;let l = count; let index = index"  >- {{ getQuestionByIdForFrontend(d.nextQuestionId) }}<br/><hr *ngIf="index < l-1"></ng-container>
                                 </div>

@@ -171,13 +171,13 @@ check:boolean = false;
 closeResult: string;
 newCatOn: boolean = false;
 
-forms: Kategorien2[];
-ftypes: Kategorien2[];
-cats: Kategorien2[];
+forms: Kategorien3[];
+ftypes: Kategorien3[];
+cats: Kategorien4[];
 allStarts: Starting[];
-startHintText: string;
+startHintText: string = "Moin";
 
-
+kpform: Kategorien3[];
 
 
 
@@ -207,6 +207,7 @@ ngOnInit() {
   this.cats = [];
   this.allStarts =  [];
   this.startHintText = "";
+  this.kpform = [];
 
   //______________________________________________________________
 
@@ -214,9 +215,35 @@ ngOnInit() {
 
 
 
+
+
+  let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+  this.api.getAllForms(urlFormId).subscribe(forms => {this.ftypes = forms;},err => {console.log(err);});
+  let urlFormId2 = 'https://meinveranstaltungsformular.herokuapp.com/category/all';
+  this.api.getAllForms(urlFormId2).subscribe(cats => {this.cats = cats;},err => {console.log(err);});
+
+ // let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+  console.log("GET'EM ALL");
+  this.api.getQuestion(urlFormId).subscribe(forms => {console.log(forms);this.forms = forms;},err => {console.log(err);});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-
-
 this.hashIdQuestion = [];
 
 /**
@@ -324,6 +351,8 @@ this.api
 
 // Für den Filter (Filtern nach Formular-Art und dann nach deren Kategorie)
 changeCatOn(): void{
+  console.log(this.cats);
+console.log(this.ftypes);
 
     this.catOn = true;
     this.dataSetCat =  new Set<String>();
@@ -345,6 +374,14 @@ changeCatOn(): void{
 
 // Bei Klick auf eine Der Fragen aus dem Fragekatalog werden die Daten der geklickten Frage geladen
   loadQuestion(question: any): void {
+
+  let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+  console.log("GET'EM ALL");
+  this.api.getQuestion(urlFormId).subscribe(forms => {console.log(forms);this.forms = forms;},err => {console.log(err);});
+
+
+
+
 
     this.mandatoryOn = question.mandatory;
 
@@ -617,7 +654,7 @@ let zt: number = 0;
  
 
   
-// setTimeout(window.location.reload.bind(window.location), 1250);
+ setTimeout(window.location.reload.bind(window.location), 1250);
  //location.reload();
 
 }
@@ -701,7 +738,7 @@ getFormType(): void{
 
   let rightformId:number;
   for(let t = 0; t < this.forms.length; t++){
-      if( this.chosenFormType == this.ftypes[t].name){
+      if( this.chosenFormType == this.ftypes[t].formname){
         rightformId = this.ftypes[t].id;
         zw = true;
       }
@@ -736,8 +773,8 @@ getCategory(): void{
   this.api.getAllForms(urlFormId).subscribe(cats => {this.cats = cats;},err => {console.log(err);});
 
   let rightCatId:number;
-  for(let t = 0; t < this.forms.length; t++){
-      if( this.chosenCategoryCat == this.cats[t].name){
+  for(let t = 0; t < this.cats.length; t++){
+      if( this.chosenCategoryCat == this.cats[t].category){
         rightCatId = this.cats[t].id;
        
       }
@@ -757,6 +794,9 @@ getCategory(): void{
 
 getAllQuestionsOfFormTypeWithinCategory(): void {
 
+console.log(this.cats);
+console.log(this.ftypes);
+
 
   if(this.chosenFormTypeCat == "Alle Fragen"){
     if(this.chosenCategoryCat != "keine Kategorie"){
@@ -772,11 +812,11 @@ getAllQuestionsOfFormTypeWithinCategory(): void {
   }else{
     if(this.chosenCategoryCat == "keine Kategorie"){
 
-      let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
-      this.api.getAllForms(urlFormId).subscribe(forms => {this.ftypes = forms;},err => {console.log(err);});
+      //let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+      //this.api.getAllForms(urlFormId).subscribe(forms => {this.ftypes = forms;},err => {console.log(err);});
       let rightformId:number;
       for(let t = 0; t < this.forms.length; t++){
-          if( this.chosenFormTypeCat == this.ftypes[t].name){
+          if( this.chosenFormTypeCat == this.ftypes[t].formname){
             rightformId = this.ftypes[t].id;
            
           }
@@ -790,20 +830,23 @@ getAllQuestionsOfFormTypeWithinCategory(): void {
     }else{
 
 
-      let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
-      this.api.getAllForms(urlFormId).subscribe(forms => {this.ftypes = forms;},err => {console.log(err);});
+      //let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+      //this.api.getAllForms(urlFormId).subscribe(forms => {this.ftypes = forms;},err => {console.log(err);});
       let rightformId:number;
       for(let t = 0; t < this.forms.length; t++){
-          if( this.chosenFormTypeCat == this.ftypes[t].name){
+          if( this.chosenFormTypeCat == this.ftypes[t].formname){
             rightformId = this.ftypes[t].id;
            
           }
       }
-      let urlFormId2 = 'https://meinveranstaltungsformular.herokuapp.com/category/all';
-      this.api.getAllForms(urlFormId2).subscribe(cats => {this.cats = cats;},err => {console.log(err);});
+ 
+      //let urlFormId2 = 'https://meinveranstaltungsformular.herokuapp.com/category/all';
+      //this.api.getAllForms(urlFormId2).subscribe(cats => {this.cats = cats;},err => {console.log(err);});
       let rightCatId:number;
-      for(let t = 0; t < this.forms.length; t++){
-          if( this.chosenCategoryCat == this.cats[t].name){
+      for(let t = 0; t < this.cats.length; t++){
+        console.log("Moin!!!!!");
+        console.log(this.chosenCategoryCat + " || " + this.cats[t].category);
+          if( this.chosenCategoryCat == this.cats[t].category){
             rightCatId = this.cats[t].id;
           
           }
@@ -1044,26 +1087,34 @@ toggleCat(){
 
 
 setStart(){
-
+/** 
   let urlFormId = 'https://meinveranstaltungsformular.herokuapp.com/forms/all';
+  console.log("GETEM ALL");
   
-  this.api.getAllForms(urlFormId).subscribe(forms => {console.log(forms);this.forms = forms;},err => {console.log(err);});
+  //this.api.getAllForms(urlFormId).subscribe(forms => {console.log(forms);this.kpform = forms;},err => {console.log(err);});
+  this.api.getQuestion(urlFormId).subscribe(forms => {console.log(forms);this.kpform = forms;},err => {console.log(err);});
+**/
+//console.log(this.forms);
 
   let rightformId:number;
   for(let t = 0; t < this.forms.length; t++){
-      if( this.question.formType == this.forms[t].name){
+    console.log("LIST:" + this.forms[t].formname);
+    console.log("Searched: " + this.question.formType);
+      if( this.question.formType == this.forms[t].formname){
         rightformId = this.forms[t].id;
       }
   }
+
+  // rightformId undefined; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   let startingID:StartingId = {formId: rightformId, questionCategoryId: this.question.questionCategory[0].id};
 
   let starting:Starting = {stardingId: startingID, formId: rightformId, questionCategoryId: this.question.questionCategory[0].id, questionId: this.question.id, startText: this.startHintText};
 
   let urlStarting = 'https://meinveranstaltungsformular.herokuapp.com/form/' + rightformId + '/category/' + this.question.questionCategory[0].id + '/setstart';
-
-  this.api.addStarting(starting, urlStarting);
-
+  //console.log(this.kpform);
+  this.api.addStarting(starting, urlStarting).subscribe(startRes => {console.log(startRes);},err => {console.log(err);});
+ // console.log(this.kpform);
 /** 
   
   for(let c of this.dataDisplay){
@@ -1118,6 +1169,9 @@ setStart(){
 
   open2(content) { 
 
+    this.categoryArrayOp1 = this.categoryArray[0].category
+    this.newCatOn = false;
+    
     let dataSetCatZw = new Set();
     dataSetCatZw.add("NEUE Kategorie")
     
@@ -1191,7 +1245,7 @@ this.deleteIdQuestion = -1;
 this.deleteOn = false;
 this.editOn = false;
 
-setTimeout(window.location.reload.bind(window.location), 1250);
+//setTimeout(window.location.reload.bind(window.location), 1250);
 
 //location.reload();
 
@@ -1466,6 +1520,21 @@ interface Kategorien2{
    
   id:number,
   name:string
+
+}
+
+interface Kategorien3{
+   
+  id:number,
+  formname:string
+
+}
+
+
+interface Kategorien4{
+   
+  id:number,
+  category:string
 
 }
 
